@@ -3,18 +3,53 @@ package estDat.estDatLin;
 public class ListaSE<T> implements Lista<T>{
     private T          ini;
     private ListaSE<T> sig;
+    public ListaSE(){
+        ini = null;
+        sig = null;
+    }
     
     public boolean vacia(){
-        return false;
+        return ini == null;
     }
     public void insertar(T dato){
+        if(vacia()){
+            ini = dato;
+            sig = new ListaSE<T>(); 
+        }else{
+            sig.insertar(dato);
+        }
     }
     public void insertar(T dato, int pos){
+        if(pos<= longitud()){        
+            if(pos==0){
+                insertarIni(dato);                
+            }else{
+                insertar(dato, pos-1);
+            }
+        }
     }
     public void insertarIni(T dato){
+        if(vacia()){
+            ini = dato;
+            sig = new ListaSE<T>();
+        }else{
+            T aux = ini;
+            ini = dato;
+            sig.insertarIni(aux);
+        }
     }
     public T eliminar(int pos){
-        return null;
+        T eliminado= null;
+        if(!vacia()){
+            if(pos == 1){
+                eliminado = sig.getIni();
+                ListaSE<T> sigSig = sig.getSig(); 
+                sigSig.insertarIni(ini);
+            }else{
+                sig.eliminar(pos-1);
+            }
+        }
+        return eliminado;
     }
     public T eliminar(T dato){
         return null;
@@ -33,12 +68,20 @@ public class ListaSE<T> implements Lista<T>{
         return null;
     }
     public int longitud(){
-        return 0;
+        int length = 0;
+        if(!vacia())  length = 1 + sig.longitud();
+        return length;
     }
     public boolean buscar(T dato){
         return false;
     }
     public int indiceDe(T dato){
         return 0;
+    }
+    public T getIni(){
+        return ini;
+    }
+    public ListaSE<T> getSig(){
+        return sig;
     }
 }
